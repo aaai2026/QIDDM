@@ -1,0 +1,2 @@
+loss,ssim,time_this_iter_s,done,training_iteration,trial_id,date,timestamp,time_total_s,pid,hostname,node_ip,time_since_restore,iterations_since_restore
+0.035082397954692195,0.24356899530478657,526.8884317874908,True,1,479db_00008,2024-11-20_13-55-48,1732082148,526.8884317874908,1991,MacBook-Air.local,127.0.0.1,526.8884317874908,1
