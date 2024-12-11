@@ -38,7 +38,7 @@ def parse_args(args):
         "--model",
         type=str,
         default=[
-            ["UNetUndirected", "3", "6", "0"],
+            ["UNetUndirected", "3", "8", "0"],
             ["differN_noise", 28, "15", "2"],
             # ["differN_noise", 28, "9", "2"],
             ["QDenseUndirected_old_noise", "60", "28"],
