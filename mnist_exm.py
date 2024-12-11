@@ -125,9 +125,9 @@ def parse_args(args):
     parser.add_argument("--ds-size", type=int, default=5000, help="Dataset size. 80% is used for training.")
     # 所有预模型学习率i
     # u-net
-    parser.add_argument("--UNetUndirected_lr", type=float, default=0.00637, help="Learning rate.")
+    parser.add_argument("--UNetUndirected_lr", type=float, default=0.00641, help="Learning rate.")
     # differn
-    parser.add_argument("--differN_noise_lr", type=float, default=0.0411, help="Learning rate.") #0.04587
+    parser.add_argument("--differN_noise_lr", type=float, default=0.04587, help="Learning rate.") #0.04587
     # qdense
     parser.add_argument("--QDenseUndirected_old_noise_lr", type=float, default=0.00211, help="Learning rate.")
     # pl
@@ -248,21 +248,21 @@ def test(add_noise):  # [0,255]
     real_images = torch.clamp(real_images, 0.0, 255.0)
 
     # 保存训练集图像，保存生成图像
-    # image_0_path = pathlib.Path(args.save_path) / "image_0"
-    # image_0_path.mkdir(parents=True, exist_ok=True)
-    #
-    # for i in range(x_train.size(0)):  # 遍历训练集中的每张图像
-    #     img_path = image_0_path / f"train_image_{i + 1}.png"
-    #     plt.imsave(img_path, x_train[i].cpu().view(args.img_size, args.img_size).numpy(), cmap="gray")
-    #
-    # # # 保存图像到不同的文件夹
-    # for i in range(generated_images.size(1)):  # 遍历每张图像
-    #     folder_path = pathlib.Path(args.save_path) / f"image_{i + 1}"
-    #     folder_path.mkdir(parents=True, exist_ok=True)
-    #
-    #     for j in range(generated_images.size(0)):  # 遍历去噪的每一步
-    #         img_path = folder_path / f"step_{j + 1}.png"
-    #         plt.imsave(img_path, generated_images[j, i, 0].cpu().numpy(), cmap="gray")
+    image_0_path = pathlib.Path(args.save_path) / "image_0"
+    image_0_path.mkdir(parents=True, exist_ok=True)
+    
+    for i in range(x_train.size(0)):  # 遍历训练集中的每张图像
+        img_path = image_0_path / f"train_image_{i + 1}.png"
+        plt.imsave(img_path, x_train[i].cpu().view(args.img_size, args.img_size).numpy(), cmap="gray")
+    
+    # # 保存图像到不同的文件夹
+    for i in range(generated_images.size(1)):  # 遍历每张图像
+        folder_path = pathlib.Path(args.save_path) / f"image_{i + 1}"
+        folder_path.mkdir(parents=True, exist_ok=True)
+    
+        for j in range(generated_images.size(0)):  # 遍历去噪的每一步
+            img_path = folder_path / f"step_{j + 1}.png"
+            plt.imsave(img_path, generated_images[j, i, 0].cpu().numpy(), cmap="gray")
 
     # 显示并保存全部图片
     plt.imshow(outp.cpu().double(), cmap="gray")  #
@@ -340,7 +340,7 @@ if __name__ == "__main__":
     original_save_path = args.save_path
     original_load_path = args.load_path
 
-    for label in range(0, 1):
+    for label in range(0, 10):
         args.label = label
         print(args)
 
