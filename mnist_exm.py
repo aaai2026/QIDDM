@@ -127,7 +127,7 @@ def parse_args(args):
     # u-net
     parser.add_argument("--UNetUndirected_lr", type=float, default=0.00641, help="Learning rate.")
     # differn
-    parser.add_argument("--differN_noise_lr", type=float, default=0.04587, help="Learning rate.") #0.04587
+    parser.add_argument("--differN_noise_lr", type=float, default=0.00917, help="Learning rate.") #0.04587
     # qdense
     parser.add_argument("--QDenseUndirected_old_noise_lr", type=float, default=0.00211, help="Learning rate.")
     # pl
