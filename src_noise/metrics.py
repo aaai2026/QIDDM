@@ -231,7 +231,7 @@ def get_ssim(generated_images_dict, real_images_dict, args, gen_img_count=None, 
 
             avg_ssim = torch.tensor(iteration_ssim_values).mean().item()
             ssim_values.append(avg_ssim)
-            # print(f"Iteration {iteration}, Average SSIM: {avg_ssim}")
+            print(f"Iteration {iteration}, Average SSIM: {avg_ssim}")
 
         ssim_values_dict[model_name] = ssim_values
 
@@ -315,72 +315,37 @@ def get_fid(generated_images_dict, real_images_dict, args, gen_img_count=None, r
         if real_img_count is not None and real_img_count < real_images.shape[0]:
             real_images = real_images[:real_img_count, :, :, :]
 
-        
         fid_values = []
 
         for iteration in range(generated_images.shape[0]):
             iteration_fid_values = []
-
-            for i in range(generated_images.shape[1]):
-                for j in range(real_images.shape[0]):
-                    generated_image = generated_images[iteration, i].squeeze().cpu().numpy()
-                    real_image = real_images[j].squeeze().cpu().numpy()
-                    fid_value = calculate_fid(real_image, generated_image)
-                    iteration_fid_values.append(fid_value)
+            generated_image = generated_images[iteration].squeeze().cpu().numpy()
+            real_image = real_images.squeeze().cpu().numpy()
+            fid_value = calculate_fid(generated_image, real_image, gen_img_count, real_img_count)
+            iteration_fid_values.append(fid_value)
 
             avg_fid = torch.tensor(iteration_fid_values).mean().item()
             fid_values.append(avg_fid)  # every batch's fid
 
         fid_values_dict[model_name] = fid_values
 
-    show_metrics(fid_values_dict, 'FID', 'Iteration', args, model_name=model_name, model_params=args.model)
+    show_metrics(fid_values_dict, 'fid', args, model_name=model_name, model_params=args.model)
 
     return fid_values_dict
 
 
-def calculate_fid(act1, act2):
-    # 检查 act1 是否是 PyTorch 张量，如果是，则转换为 NumPy 数组
-    if isinstance(act1, torch.Tensor):
-        act1 = act1.detach().numpy().reshape([1, -1])
-    else:
-        act1 = act1.reshape([1, -1])  # 如果已经是 NumPy 数组，直接 reshape
-
-    # 同样检查 act2 是否是 PyTorch 张量
-    if isinstance(act2, torch.Tensor):
-        act2 = act2.detach().numpy().reshape([1, -1])
-    else:
-        act2 = act2.reshape([1, -1])
-
-    # 计算均值
+def calculate_fid(act1, act2, n1, n2):
+    #act1 = act1.detach().cpu().numpy().reshape([1, 784])
+    act1 = act1.reshape([n1, -1])
+    act2 = act2.reshape([n2, -1])
     mu1, sigma1 = act1.mean(axis=0), np.cov(act1, rowvar=False)
     mu2, sigma2 = act2.mean(axis=0), np.cov(act2, rowvar=False)
-
-    # 如果协方差矩阵是标量或一维数组，强制转换为矩阵
-    if sigma1.ndim == 0:
-        sigma1 = np.array([[sigma1]])
-    elif sigma1.ndim == 1:
-        sigma1 = np.diag(sigma1)
-
-    if sigma2.ndim == 0:
-        sigma2 = np.array([[sigma2]])
-    elif sigma2.ndim == 1:
-        sigma2 = np.diag(sigma2)
-
-    # 计算均值的平方差
-    ssdiff = np.sum((mu1 - mu2) ** 2.0)
-
-    # 计算协方差矩阵乘积的平方根
+    ssdiff = np.sum((mu1 - mu2)**2.0)
     covmean = sqrtm(sigma1.dot(sigma2))
-
-    # 处理可能的复数问题
     if np.iscomplexobj(covmean):
         covmean = covmean.real
-
-    # 计算最终的FID值
     fid = ssdiff + np.trace(sigma1 + sigma2 - 2.0 * covmean)
-
     return fid
-
 
 def show_images(images, num_images=5, img_size=(8, 8)):
     num = min(num_images, len(images))

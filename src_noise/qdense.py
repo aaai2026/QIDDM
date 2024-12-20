@@ -68,10 +68,11 @@ class QDenseUndirected_old(torch.nn.Module):
 
 
 class QDenseUndirected_old_noise(torch.nn.Module):
-    def __init__(self, qdepth, shape, add_noise=0, device_type="default.qubit.torch") -> None:
+    def __init__(self, qdepth, shape, add_noise=0, noise_intensity=0.05, device_type="default.qubit.torch") -> None:
         super().__init__()
         self.qdepth = qdepth
         self.add_noise = add_noise
+        self.noise_intensity=noise_intensity
         if isinstance(shape, int):
             shape = (shape, shape)
         self.width, self.height = shape
@@ -96,11 +97,11 @@ class QDenseUndirected_old_noise(torch.nn.Module):
         qml.StronglyEntanglingLayers(weights=torch.tanh(self.weights), wires=range(self.wires))
         for wire in range(self.wires):
             if self.add_noise == 1:
-                qml.PhaseShift(0.05, wires=wire)
+                qml.PhaseShift(self.noise_intensity, wires=wire)
             elif self.add_noise == 2:
-                qml.AmplitudeDamping(0.05, wires=wire)
+                qml.AmplitudeDamping(self.noise_intensity, wires=wire)
             elif self.add_noise == 3:
-                qml.DepolarizingChannel(0.02, wires=wire)
+                qml.DepolarizingChannel(self.noise_intensity, wires=wire)
         return qml.probs(wires=range(self.wires))
 
     def _post_process(self, probs):
@@ -289,7 +290,7 @@ class QNN(nn.Module):
 
 
 class QNN_noise(nn.Module):
-    def __init__(self, input_dim, hidden_features, qdepth: int, add_noise=0, noise_intensity=0.1) -> None:
+    def __init__(self, input_dim, hidden_features, qdepth: int, add_noise=0, noise_intensity=0.05) -> None:
         super().__init__()
         if isinstance(input_dim, str):
             input_dim = eval(input_dim)  # 将字符串解析为表达式，例如 "28 * 28" -> 784
@@ -328,7 +329,7 @@ class QNN_noise(nn.Module):
 
             # 根据 add_noise 参数选择性添加噪声
             if self.add_noise == 1:
-                qml.PhaseDamping(self.noise_intensity, wires=j)  # Phase Damping
+                qml.PhaseDamping(self.noise_intensity, wires=j)  # Phase Damping 0 - 2pai
             elif self.add_noise == 2:
                 qml.AmplitudeDamping(self.noise_intensity, wires=j)  # Amplitude Damping
             elif self.add_noise == 3:
@@ -384,7 +385,7 @@ class QNN_noise(nn.Module):
 class differN_noise(nn.Module):
     """Dense variational circuit with batch processing enabled"""
 
-    def __init__(self, shape, spectrum_layer, N, add_noise=0, noise_intensity=0.1) -> None:
+    def __init__(self, shape, spectrum_layer, N, add_noise=0, noise_intensity=0.05) -> None:
         super().__init__()
         if isinstance(shape, int):
             shape = (shape, shape)
@@ -471,12 +472,14 @@ class differN_noise(nn.Module):
 
 
 class QIDDM_PL_noise(nn.Module):
-    def __init__(self, input_dim, hidden_features, spectrum_layer, N: int, add_noise=0, device_type="lightning.qubit") -> None:
+    def __init__(self, input_dim, hidden_features, spectrum_layer, N: int, add_noise=0, noise_intensity=0.05, device_type="lightning.qubit") -> None:
         super().__init__()
         self.hidden_features = hidden_features
         self.spectrum_layer = spectrum_layer
         self.N = N
         self.add_noise = add_noise
+        self.noise_intensity = noise_intensity
+
 
         # 使用 PCA 进行降维
         self.pca = PCA(n_components=hidden_features)
@@ -508,11 +511,11 @@ class QIDDM_PL_noise(nn.Module):
 
                 # 根据 add_noise 参数选择性添加噪声
                 if self.add_noise == 1:
-                    qml.PhaseDamping(0.03, wires=j)  # Phase Damping
+                    qml.PhaseDamping(self.noise_intensity, wires=j)  # Phase Damping
                 elif self.add_noise == 2:
-                    qml.AmplitudeDamping(0.05, wires=j)  # Amplitude Damping
+                    qml.AmplitudeDamping(self.noise_intensity, wires=j)  # Amplitude Damping
                 elif self.add_noise == 3:
-                    qml.DepolarizingChannel(0.02, wires=j)  # Depolarizing Channel
+                    qml.DepolarizingChannel(self.noise_intensity, wires=j)  # Depolarizing Channel
 
             qml.StronglyEntanglingLayers(weights1[i], wires=range(self.hidden_features), imprimitive=qml.ops.CZ)
 
