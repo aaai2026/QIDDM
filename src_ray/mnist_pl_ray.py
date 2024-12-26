@@ -165,7 +165,7 @@ def test(diff, x_test, first_x):  # [0,255]
 
     # 将输出放大到 [0, 255] 范围内
     outp = outp * 255.0
-    outp = torch.clamp(outp, 0.0, 255.0)
+    outp = torch.clamp(outp, 0.0, 1.0)
 
     generated_images = einops.rearrange(
         outp, "(iters height) (batch width) -> iters batch 1 height width",
@@ -184,7 +184,7 @@ def test(diff, x_test, first_x):  # [0,255]
 
     real_images = (real_images - real_images_min) / (real_images_max - real_images_min + 1e-7)  # 归一化到 [0, 1]
     real_images = real_images * 255.0
-    real_images = torch.clamp(real_images, 0.0, 255.0)
+    real_images = torch.clamp(real_images, 0.0, 1.0)
 
     # 计算并保存 SSIM，使用最多 10 张生成图像和 4 张真实图像
     ssim_values = get_ssim_single(generated_images, real_images, args, gen_img_count=1, real_img_count=20)
