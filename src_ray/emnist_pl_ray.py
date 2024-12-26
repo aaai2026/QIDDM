@@ -156,7 +156,7 @@ def train_fmnist28(config):
 def test(diff, x_test, first_x):  # [0,255]
 
     diff.eval()
-    tau_test = args.tau * 2
+    tau_test = 5
 
     outp = diff.sample(first_x=first_x, n_iters=tau_test, show_progress=True, only_last=False)
 
