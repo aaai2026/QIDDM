@@ -8,11 +8,10 @@ This repository contains the official implementation and trained models for our 
 ---
 
 This work is currently under review for *SC2025*. Please note that the code and documentation are still being organized. Stay tuned for updates.
-## 📝 Project Status
+
 
 ## 📁 **Project Structure**
-🚧 **Current Status: Under Rebuttal**  
-This work is currently under review for *SC2025*. The codebase and documentation are still being organized. Please stay tuned for updates.
+
 
 ### `src/`
 Contains the main experimental code for the proposed **QIDDM** (Quantum-Improved Denoising Diffusion Model).
@@ -20,9 +19,10 @@ Contains the main experimental code for the proposed **QIDDM** (Quantum-Improved
 
 ### `results/`
 Includes detailed visualizations of experimental results, showcasing the performance of **QIDDM** on various benchmark tasks.
-## 📁 Project Structure
 
 Additional experiments and code are still being organized and will be released soon.
+## 📁 Project Structure for rebuttal
+
 - **`SC_QIDDM_rebuttal.pdf`**  
   The revised manuscript prepared in response to reviewer comments. Key modifications are highlighted in blue. Figures and tables have been improved for clarity and readability.
 
