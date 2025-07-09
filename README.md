@@ -7,7 +7,7 @@ This repository contains the official implementation and trained models for our 
 ## 📝 **Current Status**
 ---
 
-This work is currently under review for *SC2025*. Please note that the code and documentation are still being organized. Stay tuned for updates.
+This work is currently under review for *EAAI*. Please note that the code and documentation are still being organized. Stay tuned for updates.
 
 
 ## 📁 **Project Structure**
@@ -22,16 +22,12 @@ Includes detailed visualizations of experimental results, showcasing the perform
 
 Additional experiments and code are still being organized and will be released soon.
 ## 📁 Project Structure for rebuttal
-
-- **`SC_QIDDM_rebuttal.pdf`**  
-  The revised manuscript prepared in response to reviewer comments. Key modifications are highlighted in blue. Figures and tables have been improved for clarity and readability.
-
 ## ⚙️ **Requirements**
-- **`results_rebuttal_noise/`**  
+- **`results_noise/`**  
   Contains detailed noise analysis experiments added during the rebuttal phase, including trained models, data, and code.
 
 To run the code and experiments in this repository, you need to install the necessary Python libraries. You can install all required dependencies by using the following command:
-- **`results_rebuttal_complex_dataset/`**  
+- **`results_complex_dataset/`**  
   Includes experiments on complex datasets as part of the rebuttal, along with associated models, data, and code.
 
 - **`src/`**  
