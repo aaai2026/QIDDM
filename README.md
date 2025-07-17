@@ -7,7 +7,7 @@ This repository contains the official implementation and trained models for our 
 ## 📝 **Current Status**
 ---
 
-This work is currently under review for *EAAI*. Please note that the code and documentation are still being organized. Stay tuned for updates.
+This work is currently under review for *AAAI*. Please note that the code and documentation are still being organized. Stay tuned for updates.
 
 
 ## 📁 **Project Structure**
